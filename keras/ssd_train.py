@@ -142,10 +142,10 @@ class Generator(object):
                     targets = []
                     yield preprocess_input(tmp_inp), tmp_targets                
 
-# csv_path = "/home/dipesh/Desktop/rohan/mnist/data.csv"
-# folder_path_prefix = "/home/dipesh/Desktop/rohan/mnist/multi_imgs/"
-csv_path = "/home/dipesh/Desktop/rohan/mnist/small_data.csv"
-folder_path_prefix = "/home/dipesh/Desktop/rohan/mnist/small_multi_imgs/"
+csv_path = "/home/dipesh/Desktop/rohan/mnist/data.csv"
+folder_path_prefix = "/home/dipesh/Desktop/rohan/mnist/multi_imgs/"
+# csv_path = "/home/dipesh/Desktop/rohan/mnist/small_data.csv"
+# folder_path_prefix = "/home/dipesh/Desktop/rohan/mnist/small_multi_imgs/"
 gen = Generator(csv_path, folder_path_prefix, 1, (input_shape[0], input_shape[1]))
 
 
@@ -164,11 +164,14 @@ for L in model.layers:
 def schedule(epoch, decay=0.9):
     return base_lr * decay**(epoch)
 
-callbacks = [keras.callbacks.ModelCheckpoint('./checkpoints/weights.{epoch:02d}-{val_loss:.2f}.hdf5',
+callbacks = [keras.callbacks.ModelCheckpoint('weights.{epoch:02d}-{val_loss:.2f}.hdf5',
                                              verbose=1,
                                              save_weights_only=True),
              keras.callbacks.LearningRateScheduler(schedule)]
-
+# callbacks = [keras.callbacks.ModelCheckpoint('./checkpoints/weights.{epoch:02d}-{val_loss:.2f}.hdf5',
+#                                              verbose=1,
+#                                              save_weights_only=True),
+#              keras.callbacks.LearningRateScheduler(schedule)]
 base_lr = 3e-4
 optim = keras.optimizers.Adam(lr=base_lr)
 # optim = keras.optimizers.RMSprop(lr=base_lr)
@@ -178,20 +181,28 @@ model.compile(optimizer=optim,
 
 # nb_epoch = 30
 nb_epoch = 1
-history = model.fit_generator(gen.generate(True), gen.train_batches,
+history = model.fit_generator(gen.generate(True), 3000,
                               nb_epoch, verbose=1,
                               callbacks=callbacks,
                               validation_data=gen.generate(False),
-                              nb_val_samples=gen.train_batches,
+                              nb_val_samples=5,
                               nb_worker=1)
 
-inputs = []
-images = []
-img_path = path_prefix + sorted(val_keys)[0]
-img = image.load_img(img_path, target_size=(300, 300))
-img = image.img_to_array(img)
-images.append(imread(img_path))
-inputs.append(img.copy())
+val_gt_bbox, len_data = load_gt_bbox("/home/dipesh/Desktop/rohan/mnist/small_data.csv","/home/dipesh/Desktop/rohan/mnist/small_multi_imgs")
+
+for imagename, num_objects, class_numbers, x_y_centres, size, rotation in val_gt_bbox:
+    # pdb.set_trace()
+    # img = imread(img_path).astype('float32')
+
+    inputs = []
+    images = []
+    # img_path = folder_path_prefix + sorted(val_keys)[0]
+    path_prefix = "/home/dipesh/Desktop/rohan/mnist/small_multi_imgs/"
+    img_path = path_prefix + imagename
+    img = image.load_img(img_path, target_size=(300, 300))
+    img = image.img_to_array(img)
+    images.append(imread(img_path))
+    inputs.append(img.copy())
 inputs = preprocess_input(np.array(inputs))
 
 preds = model.predict(inputs, batch_size=1, verbose=1)
@@ -231,8 +242,13 @@ for i, img in enumerate(images):
 #         label_name = voc_classes[label - 1]
         display_txt = '{:0.2f}, {}'.format(score, label)
         coords = (xmin, ymin), xmax-xmin+1, ymax-ymin+1
-        color = colors[label]
+        print(label)
+        # color = colors[label]
+        color = colors[0]
         currentAxis.add_patch(plt.Rectangle(*coords, fill=False, edgecolor=color, linewidth=2))
         currentAxis.text(xmin, ymin, display_txt, bbox={'facecolor':color, 'alpha':0.5})
     
-    plt.show()
+    # plt.show()
+    pdb.set_trace()
+    plt.savefig(f"{str(i)}.jpg")
+    plt.savefig("default.jpg")
