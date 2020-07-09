@@ -216,6 +216,7 @@ inputs = preprocess_input(np.array(inputs))
 preds = model.predict(inputs, batch_size=1, verbose=1)
 results = bbox_util.detection_out(preds)
 conf_thres = 0.2
+save_count = 0
 for i, img in enumerate(images):
     # Parse the outputs.
     det_label = results[i][:, 0]
@@ -227,7 +228,7 @@ for i, img in enumerate(images):
 
     # Get detections with confidence higher than 0.6.
     # top_indices = [i for i, conf in enumerate(det_conf) if conf >= 0.6]
-    pdb.set_trace()
+    # pdb.set_trace()
     top_indices = [i for i, conf in enumerate(det_conf) if conf >= conf_thres]
 
     top_conf = det_conf[top_indices]
@@ -259,7 +260,8 @@ for i, img in enumerate(images):
         currentAxis.text(xmin, ymin, display_txt, bbox={'facecolor':color, 'alpha':0.5})
     
     # plt.show()
-    plt.savefig(f"{str(i)}.jpg")
+    plt.savefig("{}.jpg".format(save_count))
+    save_count += 1
     plt.savefig("default.jpg")
     # pdb.set_trace()
 

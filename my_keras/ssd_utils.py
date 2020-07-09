@@ -20,7 +20,7 @@ class BBoxUtility(object):
     """
     # TODO add setter methods for nms_thresh and top_K
     def __init__(self, num_classes, priors=None, overlap_threshold=0.5,
-                 nms_thresh=0.05, top_k=400):
+                 nms_thresh=0.01, top_k=400):
         self.num_classes = num_classes
         self.priors = priors
         self.num_priors = 0 if priors is None else len(priors)
