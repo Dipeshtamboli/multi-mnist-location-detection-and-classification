@@ -26,7 +26,9 @@ plt.rcParams['figure.figsize'] = (8, 8)
 plt.rcParams['image.interpolation'] = 'nearest'
 
 np.set_printoptions(suppress=True)
-
+from keras import backend as K
+K.tensorflow_backend._get_available_gpus()
+pdb.set_trace()
 # config = tf.ConfigProto()
 # config.gpu_options.per_process_gpu_memory_fraction = 0.4
 # set_session(tf.Session(config=config))
