@@ -10,11 +10,11 @@ from random import sample,randint
 f = gzip.open('mnist.pkl.gz', 'rb')
 training_data, validation_data, test_data = pickle.load(f, encoding="latin1")
 
-txt_f = open("data.csv", "w")
+txt_f = open("val_data.csv", "w")
 i_iter = 0
 img_count = 1
 
-while (i_iter<len(training_data[1])):
+while (i_iter<len(validation_data[1])):
 	print(i_iter)
 	num = randint(3,6)
 	# 9 placeholders in a 224x224 image
@@ -28,7 +28,7 @@ while (i_iter<len(training_data[1])):
 	s_labs, s_coordi, s_size, s_rotn = "","","", ""
 	frame = np.zeros((224,224))
 	for i in ((subset)):
-		img = training_data[0][i_iter]
+		img = validation_data[0][i_iter]
 		img = np.reshape(img,(28,28,1))
 		angle = randint(-15,15)
 		img = imutils.rotate(img, angle)
@@ -46,7 +46,7 @@ while (i_iter<len(training_data[1])):
 			pdb.set_trace()
 		size = randint(28,largest)
 		img = cv2.resize(img, (size,size))
-		lab = training_data[1][i_iter]
+		lab = validation_data[1][i_iter]
 		x_init = x_coordinate-size//2
 		if x_init <0: x_init=0
 		x_end = x_init + size
@@ -69,7 +69,7 @@ while (i_iter<len(training_data[1])):
 	txt_f.write(writeline +"\n")
 	# cv2.imshow("frame", frame*255)
 	# cv2.waitKey(0)
-	cv2.imwrite(f"multi_imgs/"+filename,frame*255)
+	cv2.imwrite(f"val_multi_imgs/"+filename,frame*255)
 	img_count += 1
 
 	# print(i_iter)
