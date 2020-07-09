@@ -28,7 +28,7 @@ plt.rcParams['image.interpolation'] = 'nearest'
 np.set_printoptions(suppress=True)
 from keras import backend as K
 K.tensorflow_backend._get_available_gpus()
-pdb.set_trace()
+# pdb.set_trace()
 # config = tf.ConfigProto()
 # config.gpu_options.per_process_gpu_memory_fraction = 0.4
 # set_session(tf.Session(config=config))
@@ -184,12 +184,12 @@ model.compile(optimizer=optim,
               loss=MultiboxLoss(NUM_CLASSES, neg_pos_ratio=2.0).compute_loss,metrics=['acc'])
 
 # nb_epoch = 30
-nb_epoch = 2
-history = model.fit_generator(gen.generate(True), 5000,
+nb_epoch = 3
+history = model.fit_generator(gen.generate(True), 10000,
                               nb_epoch, verbose=1,
                               callbacks=callbacks,
                               validation_data=gen.generate(False),
-                              nb_val_samples=200,
+                              nb_val_samples=500,
                               nb_worker=1)
 
 val_gt_bbox, len_data = load_gt_bbox(val_csv_path,val_folder_prefix)
@@ -197,7 +197,7 @@ val_gt_bbox, len_data = load_gt_bbox(val_csv_path,val_folder_prefix)
 inputs = []
 images = []
 count = 0
-num_img_count =5
+num_img_count =10
 for imagename, num_objects, class_numbers, x_y_centres, size, rotation in val_gt_bbox:
     # pdb.set_trace()
     # img = imread(img_path).astype('float32')
@@ -210,13 +210,14 @@ for imagename, num_objects, class_numbers, x_y_centres, size, rotation in val_gt
     images.append(imread(img_path))
     inputs.append(img.copy())
     count += 1
-    if count>= 5:
+    if count>= num_img_count:
         break
 inputs = preprocess_input(np.array(inputs))
 
 preds = model.predict(inputs, batch_size=1, verbose=1)
 results = bbox_util.detection_out(preds)
-conf_thres = 0.2
+
+conf_thres = 0.3
 save_count = 0
 for i, img in enumerate(images):
     # Parse the outputs.
@@ -254,7 +255,7 @@ for i, img in enumerate(images):
 #         label_name = voc_classes[label - 1]
         display_txt = '{:0.2f}, {}'.format(score, label)
         coords = (xmin, ymin), xmax-xmin+1, ymax-ymin+1
-        print(label)
+        # print(label)
         # color = colors[label]
         color = colors[0]
         currentAxis.add_patch(plt.Rectangle(*coords, fill=False, edgecolor=color, linewidth=2))
