@@ -142,11 +142,10 @@ class Generator(object):
                     targets = []
                     yield preprocess_input(tmp_inp), tmp_targets                
 
-csv_path = "/home/dipesh/Desktop/rohan/mnist/multi_mnist/train_data.csv"
-folder_path_prefix = "/home/dipesh/Desktop/rohan/mnist/multi_mnist/train_multi_imgs/"
-
-val_csv_path = "/home/dipesh/Desktop/rohan/mnist/multi_mnist/val_data.csv"
-val_folder_prefix = "/home/dipesh/Desktop/rohan/mnist/multi_mnist/val_multi_imgs/"
+csv_path = "../mnist/multi_mnist/train_data.csv"
+folder_path_prefix = "../mnist/multi_mnist/train_multi_imgs/"
+val_csv_path = "../mnist/multi_mnist/val_data.csv"
+val_folder_prefix = "../mnist/multi_mnist/val_multi_imgs/"
 # csv_path = "/home/dipesh/Desktop/rohan/mnist/small_data.csv"
 # folder_path_prefix = "/home/dipesh/Desktop/rohan/mnist/small_multi_imgs/"
 gen = Generator(csv_path, folder_path_prefix, 1, (input_shape[0], input_shape[1]))
