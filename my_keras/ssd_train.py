@@ -154,7 +154,7 @@ gen = Generator(csv_path, folder_path_prefix, 1, (input_shape[0], input_shape[1]
 
 
 model = SSD300(input_shape, num_classes=NUM_CLASSES)
-# model.load_weights('VGG16SSD300_weights_voc_2007.hdf5', by_name=True)
+model.load_weights('weights.01-19.32.hdf5', by_name=True)
 
 freeze = ['input_1', 'conv1_1', 'conv1_2', 'pool1',
           'conv2_1', 'conv2_2', 'pool2',
@@ -172,10 +172,6 @@ callbacks = [keras.callbacks.ModelCheckpoint('weights.{epoch:02d}-{val_loss:.2f}
                                              verbose=1,
                                              save_weights_only=True),
              keras.callbacks.LearningRateScheduler(schedule)]
-# callbacks = [keras.callbacks.ModelCheckpoint('./checkpoints/weights.{epoch:02d}-{val_loss:.2f}.hdf5',
-#                                              verbose=1,
-#                                              save_weights_only=True),
-#              keras.callbacks.LearningRateScheduler(schedule)]
 base_lr = 3e-4
 optim = keras.optimizers.Adam(lr=base_lr)
 # optim = keras.optimizers.RMSprop(lr=base_lr)
@@ -184,12 +180,12 @@ model.compile(optimizer=optim,
               loss=MultiboxLoss(NUM_CLASSES, neg_pos_ratio=2.0).compute_loss,metrics=['acc'])
 
 # nb_epoch = 30
-nb_epoch = 3
-history = model.fit_generator(gen.generate(True), 10000,
+nb_epoch = 1
+history = model.fit_generator(gen.generate(True), 20,
                               nb_epoch, verbose=1,
                               callbacks=callbacks,
                               validation_data=gen.generate(False),
-                              nb_val_samples=500,
+                              nb_val_samples=5,
                               nb_worker=1)
 
 val_gt_bbox, len_data = load_gt_bbox(val_csv_path,val_folder_prefix)
@@ -230,7 +226,7 @@ for i, img in enumerate(images):
 
     # Get detections with confidence higher than 0.6.
     # top_indices = [i for i, conf in enumerate(det_conf) if conf >= 0.6]
-    # pdb.set_trace()
+    pdb.set_trace()
     top_indices = [i for i, conf in enumerate(det_conf) if conf >= conf_thres]
 
     top_conf = det_conf[top_indices]
@@ -265,6 +261,7 @@ for i, img in enumerate(images):
     plt.savefig("{}.jpg".format(save_count))
     save_count += 1
     plt.savefig("default.jpg")
+    plt.clf()
     # pdb.set_trace()
 
 # def det_and_save(conf_thres = 0.17):
