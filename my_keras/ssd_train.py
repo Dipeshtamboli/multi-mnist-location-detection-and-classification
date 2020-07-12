@@ -36,7 +36,7 @@ K.tensorflow_backend._get_available_gpus()
 
 
 # some constants
-NUM_CLASSES = 10+1
+NUM_CLASSES = 10
 # input_shape = (224, 224, 3)
 input_shape = (300, 300, 3)
 
@@ -44,7 +44,7 @@ priors = pickle.load(open('priorFiles/prior_boxes_ssd300MobileNetV2.pkl', 'rb'))
 # pdb.set_trace()
 priors = priors[:1692]
 
-pdb.set_trace()
+# pdb.set_trace()
 
 bbox_util = BBoxUtility(NUM_CLASSES, priors)
 
