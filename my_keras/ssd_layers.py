@@ -1,4 +1,5 @@
 """Some special pupropse layers for SSD."""
+import pdb
 import keras
 import keras.backend as K
 from keras.engine.topology import InputSpec
@@ -177,7 +178,4 @@ class PriorBox(Layer):
         if K.backend() == 'tensorflow':
             pattern = [tf.shape(x)[0], 1, 1]
             prior_boxes_tensor = tf.tile(prior_boxes_tensor, pattern)
-        elif K.backend() == 'theano':
-            #TODO
-            pass
         return prior_boxes_tensor

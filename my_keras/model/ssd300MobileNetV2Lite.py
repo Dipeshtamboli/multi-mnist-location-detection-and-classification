@@ -136,12 +136,12 @@ def SSD(input_shape, num_classes):
     x, pwconv7 = LiteConv(x, 7, 128)
     x, pwconv8 = LiteConv(x, 8, 128)
 
-    pwconv3_mbox_loc_flat, pwconv3_mbox_conf_flat, pwconv3_mbox_priorbox = prediction(pwconv3, 3, 3, 60.0 ,None ,[2],num_classes, img_size)
-    pwconv4_mbox_loc_flat, pwconv4_mbox_conf_flat, pwconv4_mbox_priorbox = prediction(pwconv4, 4, 6, 105.0,150.0,[2, 3], num_classes, img_size)
-    pwconv5_mbox_loc_flat, pwconv5_mbox_conf_flat, pwconv5_mbox_priorbox = prediction(pwconv5, 5, 6, 150.0,195.0,[2, 3], num_classes, img_size)
-    pwconv6_mbox_loc_flat, pwconv6_mbox_conf_flat, pwconv6_mbox_priorbox = prediction(pwconv6, 6, 6, 195.0,240.0,[2, 3], num_classes, img_size)
-    pwconv7_mbox_loc_flat, pwconv7_mbox_conf_flat, pwconv7_mbox_priorbox = prediction(pwconv7, 7, 6, 240.0,285.0,[2, 3], num_classes, img_size)
-    pwconv8_mbox_loc_flat, pwconv8_mbox_conf_flat, pwconv8_mbox_priorbox = prediction(pwconv8, 8, 6, 285.0,300.0,[2, 3],num_classes, img_size)
+    pwconv3_mbox_loc_flat, pwconv3_mbox_conf_flat, pwconv3_mbox_priorbox = prediction(pwconv3, 3, 3, 60.0 ,None ,[1],num_classes, img_size)
+    pwconv4_mbox_loc_flat, pwconv4_mbox_conf_flat, pwconv4_mbox_priorbox = prediction(pwconv4, 4, 6, 105.0,150.0,[1, 1], num_classes, img_size)
+    pwconv5_mbox_loc_flat, pwconv5_mbox_conf_flat, pwconv5_mbox_priorbox = prediction(pwconv5, 5, 6, 150.0,195.0,[1, 1], num_classes, img_size)
+    pwconv6_mbox_loc_flat, pwconv6_mbox_conf_flat, pwconv6_mbox_priorbox = prediction(pwconv6, 6, 6, 195.0,240.0,[1, 1], num_classes, img_size)
+    pwconv7_mbox_loc_flat, pwconv7_mbox_conf_flat, pwconv7_mbox_priorbox = prediction(pwconv7, 7, 6, 240.0,285.0,[1, 1], num_classes, img_size)
+    pwconv8_mbox_loc_flat, pwconv8_mbox_conf_flat, pwconv8_mbox_priorbox = prediction(pwconv8, 8, 6, 285.0,300.0,[1, 1],num_classes, img_size)
 
 
     # Gather all predictions

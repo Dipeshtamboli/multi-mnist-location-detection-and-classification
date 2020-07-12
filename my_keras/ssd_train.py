@@ -43,6 +43,9 @@ input_shape = (300, 300, 3)
 priors = pickle.load(open('priorFiles/prior_boxes_ssd300MobileNetV2.pkl', 'rb'))
 # pdb.set_trace()
 priors = priors[:1692]
+
+pdb.set_trace()
+
 bbox_util = BBoxUtility(NUM_CLASSES, priors)
 
 # gt = pickle.load(open('voc_2007.pkl', 'rb'))
@@ -144,6 +147,10 @@ class Generator(object):
                     targets = []
                     yield preprocess_input(tmp_inp), tmp_targets                
 
+# csv_path = "/content/drive/My Drive/multi_mnist/multi_mnist/train_data.csv"
+# folder_path_prefix = "/content/drive/My Drive/multi_mnist/multi_mnist/train_multi_imgs/"
+# val_csv_path = "/content/drive/My Drive/multi_mnist/multi_mnist/val_data.csv"
+# val_folder_prefix = "/content/drive/My Drive/multi_mnist/multi_mnist/val_multi_imgs/"
 csv_path = "../mnist/multi_mnist/train_data.csv"
 folder_path_prefix = "../mnist/multi_mnist/train_multi_imgs/"
 val_csv_path = "../mnist/multi_mnist/val_data.csv"
